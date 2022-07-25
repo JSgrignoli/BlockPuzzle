@@ -2,9 +2,10 @@ let blocks = [];
 let block = [];
 let blockArray = [];
 let index = 0;
-let index2 = 0;
 let finder = 0;
 let moves = 0;
+let text
+
 
 class BlockPuzzle extends Phaser.Scene {
     constructor() {
@@ -12,14 +13,15 @@ class BlockPuzzle extends Phaser.Scene {
     }
 
 preload() {
-    this.load.spritesheet('block', 'block.png', { frameWidth: 20, frameHeight: 20 })
+    this.load.spritesheet('block', 'block.png', { frameWidth: 40, frameHeight: 40 })
    
 
 }//preload closing bracket
 
 create() {
     //adds title and game board
-    this.add.text(175, 10, 'Block Puzzle', { fill: '#ffff' })
+    this.add.text(160, 10, 'Block Puzzle', { fill: '#ffff', align: 'center' })
+    text = this.add.text(160, 490, `Moves: 0`)
     this.createBoard();
     
     //test block
@@ -36,12 +38,12 @@ create() {
     
     this.input.on('gameobjectdown', function (pointer, gameObject) {
         //logic for handling the top row of blocks minus block 0 and 280
-        if(gameObject.index % 20 === 0 
-            && gameObject.index > 0 && gameObject.index < 280){
+        if(gameObject.index % 10 === 0 
+            && gameObject.index > 0 && gameObject.index < 70){
             blockArray = [];
             blockArray.push(gameObject.index);
-            blockArray.push(gameObject.index+20)
-            blockArray.push(gameObject.index-20)
+            blockArray.push(gameObject.index+10)
+            blockArray.push(gameObject.index-10)
             blockArray.push(gameObject.index+1)
             fill();
             moves++
@@ -50,70 +52,67 @@ create() {
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index+1)
-            blockArray.push(gameObject.index+20)
+            blockArray.push(gameObject.index+10)
             fill();
             moves++
         //logic for blocks around 280
-        }else if(gameObject.index === 280){
+        }else if(gameObject.index === 70){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index+1)
-            blockArray.push(gameObject.index-20)
+            blockArray.push(gameObject.index-10)
             fill();
             moves++
-        }else if(gameObject.index === 19){
+        }else if(gameObject.index === 9){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
-            blockArray.push(gameObject.index+20)
+            blockArray.push(gameObject.index+10)
             fill();
             moves++
-        }else if(gameObject.index === 299){
+        }else if(gameObject.index === 79){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
-            blockArray.push(gameObject.index-20)
+            blockArray.push(gameObject.index-10)
             fill();
             moves++
         //logic for the bottom row of the game board minus the corner
-        }else if(gameObject.index === 39 || gameObject.index === 59 ||
-            gameObject.index === 79 || gameObject.index === 99 ||
-            gameObject.index === 119 || gameObject.index === 139 ||
-            gameObject.index === 159 || gameObject.index === 179 || 
-            gameObject.index === 199 || gameObject.index === 219 ||
-            gameObject.index === 239 || gameObject.index === 259 ||
-            gameObject.index === 279){
+        }else if(gameObject.index === 19 || gameObject.index === 29 ||
+            gameObject.index === 39 || gameObject.index === 49 ||
+            gameObject.index === 59 || gameObject.index === 69 ||
+            gameObject.index === 79){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
-            blockArray.push(gameObject.index-20)
-            blockArray.push(gameObject.index+20);
+            blockArray.push(gameObject.index-10)
+            blockArray.push(gameObject.index+10);
             fill();
             moves++
         //logic for left side of the game board minus the corners
-        }else if(gameObject.index > 0 && gameObject.index < 19){
+        }else if(gameObject.index > 0 && gameObject.index < 9){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
             blockArray.push(gameObject.index+1)
-            blockArray.push(gameObject.index+20);
+            blockArray.push(gameObject.index+10);
             fill();
             moves++
         //logic for right side of the game board minus the corners
-        }else if(gameObject.index > 280 && gameObject.index < 299){
+        }else if(gameObject.index > 70 && gameObject.index < 79){
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
             blockArray.push(gameObject.index+1)
-            blockArray.push(gameObject.index-20);
+            blockArray.push(gameObject.index-10);
             fill();moves++
         }else{
             blockArray = [];
             blockArray.push(gameObject.index);
             blockArray.push(gameObject.index-1)
             blockArray.push(gameObject.index+1)
-            blockArray.push(gameObject.index-20);
-            blockArray.push(gameObject.index+20);
+            blockArray.push(gameObject.index-10);
+            blockArray.push(gameObject.index+10);
             fill();
             moves++
         }
@@ -123,9 +122,9 @@ create() {
     })
     
     //adds numbers to blocks as they are in the blocks array
-    for(let num = 0; num < 15; num++) {
-        for(let ber = 0; ber < 20; ber++) {
-            this.add.text(40+num*25, 45+ber*25, `${finder}`, { font: '10px', fill: '#000' })
+    for(let num = 0; num < 8; num++) {
+        for(let ber = 0; ber < 10; ber++) {
+            this.add.text(40+num*45, 45+ber*45, `${finder}`, { font: '10px', fill: '#000' })
             finder++
     }
 }
@@ -134,14 +133,14 @@ create() {
 }//create closing bracket
 
 update() {
-    this.add.text(100, 550, `Number of moves taken : ${moves}`)
+    text.setText('Moves: ' + moves)
 
     
 }//update closing bracket
 createBoard() {
-    for(let row=0; row < 15; row+=1){
-        for(let col=0; col < 20; col+=1){
-            block = this.add.sprite(50+row*25, 50+col*25, 'block').setInteractive();
+    for(let row=0; row < 8; row+=1){
+        for(let col=0; col < 10; col+=1){
+            block = this.add.sprite(50+row*45, 50+col*45, 'block').setInteractive();
             block.index = index;
             index++
             blocks.push(block)
@@ -154,7 +153,7 @@ createBoard() {
 
 const config = {
     type: Phaser.AUTO,
-    width: 450,
+    width: 415,
     height: 575,
     backgroundColor: "#000000",
     scene: [ BlockPuzzle ]
