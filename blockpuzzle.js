@@ -1,13 +1,3 @@
-let blocks = [];
-let block = [];
-let blockArray = [];
-let index = 0;
-let finder = 0;
-let moves = 0;
-let text;
-let win = false;
-
-
 class BlockPuzzle extends Phaser.Scene {
     constructor() {
         super ({ key: 'BlockPuzzle' })
@@ -123,9 +113,7 @@ create() {
             moves++
         }
     })//closing braket for game input logic
-   
-   
-    
+
     //adds numbers to blocks as they are in the blocks array
     for(let num = 0; num < 8; num++) {
         for(let ber = 0; ber < 10; ber++) {
@@ -133,15 +121,13 @@ create() {
             finder++
     }
 }
-    
-
 }//create closing bracket
 
 update() {
     //updates move counter
     text.setText('Moves: ' + moves)
 
-    //Checks win conditions
+    //checks win condition and displays win screen
     checkWin();
     if(win){
         this.add.rectangle(415/2, 200, 300, 100, 0xffffff).setOrigin(0.5)
@@ -154,44 +140,10 @@ createBoard() {
     for(let row=0; row < 8; row+=1){
         for(let col=0; col < 10; col+=1){
             block = this.add.sprite(50+row*45, 50+col*45, 'block').setInteractive()
+            block.index = index;
             index++
             blocks.push(block)
         }
     }
 }
 }//scene closing bracket
- 
-
-
-const config = {
-    type: Phaser.AUTO,
-    width: 415,
-    height: 575,
-    backgroundColor: "#000000",
-    scene: [ BlockPuzzle ]
-};
-
-const game = new Phaser.Game(config);
-
-//function to fill in square and surraounding squares when cliked
-function fill() {
-    for(let i = 0; i < blockArray.length; i++) {
-        if(blocks[blockArray[i]].alpha === 1){
-            blocks[blockArray[i]].setAlpha(.4)
-        }else {
-            blocks[blockArray[i]].setAlpha(1)
-        }
-    }
-}
-//function to check win condition
-function checkWin(array) {
-    for(let blockCheck = 0; blockCheck < blocks.length; blockCheck++){
-        if(blocks[blockCheck].alpha === 1){
-            win = false;
-            break
-        }else{
-            win = true;
-        }
-    }
-    return win;
-}
