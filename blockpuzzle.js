@@ -4,7 +4,8 @@ let blockArray = [];
 let index = 0;
 let finder = 0;
 let moves = 0;
-let text
+let text;
+let win = false;
 
 
 class BlockPuzzle extends Phaser.Scene {
@@ -19,13 +20,17 @@ preload() {
 }//preload closing bracket
 
 create() {
-    //adds title and game board
+    //adds title and game board and a move counter
     this.add.text(160, 10, 'Block Puzzle', { fill: '#ffff', align: 'center' })
     text = this.add.text(160, 490, `Moves: 0`)
     this.createBoard();
     
-    //test block
-    // blocks[299].setAlpha(.4);
+    //adds solution blocks
+    blocks[14].setAlpha(.4);
+    blocks[51].setAlpha(.4);
+    blocks[38].setAlpha(.4);
+    blocks[48].setAlpha(.4);
+    blocks[79].setAlpha(.4);
 
     //highlights block red when moused over and changes it back to white
     this.input.on('gameobjectover', function (pointer, gameObject) {
@@ -34,8 +39,7 @@ create() {
     this.input.on('gameobjectout', function (pointer, gameObject) {
         gameObject.clearTint();
     })
-    //adds counter for number of moves
-    
+    //game play logic on user input (mouse click)
     this.input.on('gameobjectdown', function (pointer, gameObject) {
         //logic for handling the top row of blocks minus block 0 and 280
         if(gameObject.index % 10 === 0 
@@ -47,7 +51,7 @@ create() {
             blockArray.push(gameObject.index+1)
             fill();
             moves++
-        //logic for blocks around index 0
+        //logic for top left corner
         }else if(gameObject.index === 0){
             blockArray = [];
             blockArray.push(gameObject.index);
@@ -55,7 +59,7 @@ create() {
             blockArray.push(gameObject.index+10)
             fill();
             moves++
-        //logic for blocks around 280
+        //logic for top right corner
         }else if(gameObject.index === 70){
             blockArray = [];
             blockArray.push(gameObject.index);
@@ -63,6 +67,7 @@ create() {
             blockArray.push(gameObject.index-10)
             fill();
             moves++
+        //logic for bottom left corner
         }else if(gameObject.index === 9){
             blockArray = [];
             blockArray.push(gameObject.index);
@@ -70,6 +75,7 @@ create() {
             blockArray.push(gameObject.index+10)
             fill();
             moves++
+        //logic for bottom left corner
         }else if(gameObject.index === 79){
             blockArray = [];
             blockArray.push(gameObject.index);
@@ -116,10 +122,9 @@ create() {
             fill();
             moves++
         }
-        
-        
-        
-    })
+    })//closing braket for game input logic
+   
+   
     
     //adds numbers to blocks as they are in the blocks array
     for(let num = 0; num < 8; num++) {
@@ -133,15 +138,22 @@ create() {
 }//create closing bracket
 
 update() {
+    //updates move counter
     text.setText('Moves: ' + moves)
+
+    //Checks win conditions
+    checkWin();
+    if(win){
+        this.add.rectangle(415/2, 200, 300, 100, 0xffffff).setOrigin(0.5)
+        this.add.text(170, 190, 'YOU WIN!', { fill: '#000', fontSize: '18px bold' } )
+    }
 
     
 }//update closing bracket
 createBoard() {
     for(let row=0; row < 8; row+=1){
         for(let col=0; col < 10; col+=1){
-            block = this.add.sprite(50+row*45, 50+col*45, 'block').setInteractive();
-            block.index = index;
+            block = this.add.sprite(50+row*45, 50+col*45, 'block').setInteractive()
             index++
             blocks.push(block)
         }
@@ -161,6 +173,7 @@ const config = {
 
 const game = new Phaser.Game(config);
 
+//function to fill in square and surraounding squares when cliked
 function fill() {
     for(let i = 0; i < blockArray.length; i++) {
         if(blocks[blockArray[i]].alpha === 1){
@@ -170,7 +183,15 @@ function fill() {
         }
     }
 }
-
-function fillArray() {
-
+//function to check win condition
+function checkWin(array) {
+    for(let blockCheck = 0; blockCheck < blocks.length; blockCheck++){
+        if(blocks[blockCheck].alpha === 1){
+            win = false;
+            break
+        }else{
+            win = true;
+        }
+    }
+    return win;
 }
