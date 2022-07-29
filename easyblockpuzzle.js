@@ -113,12 +113,12 @@ create() {
     })//closing braket for game input logic
 
     //adds numbers to blocks as they are in the blocks array
-    for(let num = 0; num < 5; num++) {
-        for(let ber = 0; ber < 5; ber++) {
-            this.add.text(110+num*45, 45+ber*45, `${finder}`, { font: '10px', fill: '#000' })
-            finder++
-    }
-}
+//     for(let num = 0; num < 5; num++) {
+//         for(let ber = 0; ber < 5; ber++) {
+//             this.add.text(110+num*45, 45+ber*45, `${finder}`, { font: '10px', fill: '#000' })
+//             finder++
+//     }
+// }
 }//create closing bracket
 
 update() {
