@@ -34,7 +34,7 @@ const config = {
     width: 415,
     height: 575,
     backgroundColor: "#000000",
-    scene: [ BlockPuzzleStart, BlockPuzzle, EasyBlockPuzzle ]
+    scene: [ BlockPuzzleStart, BlockPuzzle, EasyBlockPuzzle, BlockPuzzleRules ]
 };
 
 const game = new Phaser.Game(config);

@@ -8,11 +8,13 @@ preload(){
 }
 
 create(){
-   let titleText = this.add.text(140, 200, 'Block Puzzle')
-   let startEasy = this.add.text(170, 230, 'Easy')
-   let startHard = this.add.text(170, 260, 'Hard' )
+   let titleText = this.add.text(200, 200, 'Block Puzzle', { font: '30px bold'}).setOrigin(.5)
+   let startEasy = this.add.text(200, 250, 'Easy').setOrigin(.5)
+   let startHard = this.add.text(200, 300, 'Hard' ).setOrigin(.5)
+   let startRules = this.add.text(200, 350, 'Rules').setOrigin(.5)
    startEasy.setInteractive();
    startHard.setInteractive();
+   startRules.setInteractive();
    startEasy.on('pointerup', () => {
     this.scene.stop('BlockPuzzleStart')
     this.scene.start('EasyBlockPuzzle')
@@ -33,6 +35,16 @@ create(){
    })
    startHard.on('pointerout', () => {
     startHard.setFill('#fff')
+   })
+   startRules.on('pointerup', () => {
+    this.scene.stop('BlockPuzzleStart')
+    this.scene.start('BlockPuzzleRules')
+   })
+   startRules.on('pointerover', () => {
+    startRules.setFill('#ff0')
+   })
+   startRules.on('pointerout', () => {
+    startRules.setFill('#fff')
    })
 
 
